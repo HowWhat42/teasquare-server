@@ -27,6 +27,9 @@ export const getAccount = async (req: Request, res: Response) => {
             select: {
                 id: true,
                 name: true,
+                maxLeverage: true,
+                active: true,
+                bankrollPercentage: true,
             }
         });
         if (!account) {
