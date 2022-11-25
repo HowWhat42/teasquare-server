@@ -55,7 +55,6 @@ export const createAccount = async (req: Request, res: Response) => {
             updatedAt: new Date()
         }
         const account = await prisma.credentials.create({ data: newAccount });
-        socket.emit('addAccount', { api: apiKey, secret: apiSecret });
         res.status(201).json(account);
     } catch (error) {
         res.status(500).json(error);
