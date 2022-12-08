@@ -145,7 +145,8 @@ export const getAccountBalance = async (req: Request, res: Response) => {
         const parsedBalance = {
             total: parseFloat(balance.result.USDT.wallet_balance),
             equity: parseFloat(balance.result.USDT.equity),
-            unrealised: parseFloat(balance.result.USDT.unrealised_pnl)
+            unrealised: parseFloat(balance.result.USDT.unrealised_pnl),
+            pnl: parseFloat(balance.result.USDT.cum_realised_pnl)
         }
         return res.status(200).json(parsedBalance);
     } catch (error) {
