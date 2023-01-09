@@ -62,6 +62,7 @@ model traders {
   bybit     Boolean     @default(false)
   telegram  Boolean     @default(false)
   positions positions[]
+  trades    trades[]
 }
 
 model trades {
@@ -78,7 +79,11 @@ model trades {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @default(now())
   credentialId Int?
+  traderId     Int?
+  status       String       @default("sent")
   credentials  credentials? @relation(fields: [credentialId], references: [id], map: "trades_ibfk_1")
+  traders      traders?     @relation(fields: [traderId], references: [id], map: "trades_ibfk_2")
 
   @@index([credentialId], map: "trades_ibfk_1")
+  @@index([traderId], map: "trades_ibfk_2")
 }

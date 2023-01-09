@@ -164,16 +164,22 @@ export const getAccountPositions = async (req: Request, res: Response) => {
         const bybit = new ccxt.bybit({ apiKey: account.api, secret: account.secret });
         const rawPositions = await bybit.fetchPositions();
         const filteredPos = rawPositions.filter((position: any) => position.contracts > 0);
-        const positions = filteredPos.map((pos: any) => {
+        const positions = filteredPos.map(async (pos: any) => {
+            const trade = await prisma.trades.findFirst({ where: { pair: pos.info.symbol, open: true }, include: { traders: true } })
+
+            // console.log(trade)
             return {
                 symbol: pos.info.symbol,
                 size: pos.info.size,
                 leverage: pos.info.leverage,
                 value: pos.info.position_value,
-                side: pos.info.side
+                side: pos.info.side,
+                trader: trade?.traders?.name
             }
         });
-        return res.status(200).json(positions);
+        const result = await Promise.all(positions)
+        console.log(result)
+        return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json(error);
     }
