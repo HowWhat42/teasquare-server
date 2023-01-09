@@ -167,7 +167,6 @@ export const getAccountPositions = async (req: Request, res: Response) => {
         const positions = filteredPos.map(async (pos: any) => {
             const trade = await prisma.trades.findFirst({ where: { pair: pos.info.symbol, open: true }, include: { traders: true } })
 
-            // console.log(trade)
             return {
                 symbol: pos.info.symbol,
                 size: pos.info.size,
@@ -178,7 +177,6 @@ export const getAccountPositions = async (req: Request, res: Response) => {
             }
         });
         const result = await Promise.all(positions)
-        console.log(result)
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json(error);
