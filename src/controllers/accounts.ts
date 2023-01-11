@@ -157,7 +157,7 @@ export const getAccountBalance = async (req: Request, res: Response) => {
 export const getAccountPositions = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const account = await prisma.credentials.findUnique({ where: { id: Number(id) } });
+        const account = await prisma.credentials.findUnique({ where: { id: +id } });
         if (!account) {
             return res.status(404).json({ message: "Account not found" });
         }
@@ -165,7 +165,7 @@ export const getAccountPositions = async (req: Request, res: Response) => {
         const rawPositions = await bybit.fetchPositions();
         const filteredPos = rawPositions.filter((position: any) => position.contracts > 0);
         const positions = filteredPos.map(async (pos: any) => {
-            const trade = await prisma.trades.findFirst({ where: { pair: pos.info.symbol, open: true }, include: { traders: true } });
+            const trade = await prisma.trades.findFirst({ where: { pair: pos.info.symbol, open: true, credentialId: +id }, include: { traders: true } });
             return {
                 symbol: pos.info.symbol,
                 size: pos.info.size,
