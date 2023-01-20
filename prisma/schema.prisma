@@ -8,16 +8,14 @@ datasource db {
 }
 
 model credentials {
-  id                 Int      @id @default(autoincrement())
-  name               String   @db.VarChar(255)
-  api                String   @db.VarChar(255)
-  secret             String   @db.VarChar(255)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @default(now())
-  active             Boolean  @default(false)
-  bankrollPercentage Int      @default(5)
-  maxLeverage        Int      @default(1)
-  trades             trades[]
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  api       String   @db.VarChar(255)
+  secret    String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  active    Boolean  @default(false)
+  trades    trades[]
 }
 
 model nc_evolutions {
@@ -54,15 +52,19 @@ model positions {
 }
 
 model traders {
-  id        Int         @id @default(autoincrement())
-  name      String?     @db.VarChar(255)
-  url       String?     @db.VarChar(255)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now())
-  bybit     Boolean     @default(false)
-  telegram  Boolean     @default(false)
-  positions positions[]
-  trades    trades[]
+  id                 Int         @id @default(autoincrement())
+  name               String      @db.VarChar(255)
+  url                String      @db.VarChar(255)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @default(now())
+  bybit              Boolean     @default(false)
+  telegram           Boolean     @default(false)
+  bankrollPercentage Int         @default(5)
+  marginMode         String      @default("same")
+  maxLeverage        Int         @default(1)
+  minLeverage        Int         @default(1)
+  positions          positions[]
+  trades             trades[]
 }
 
 model trades {

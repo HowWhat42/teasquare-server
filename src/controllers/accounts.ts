@@ -9,9 +9,7 @@ export const getAccounts = async (_req: Request, res: Response) => {
             select: {
                 id: true,
                 name: true,
-                maxLeverage: true,
                 active: true,
-                bankrollPercentage: true,
             }
         })
         res.status(200).json(accounts);
@@ -28,9 +26,7 @@ export const getAccount = async (req: Request, res: Response) => {
             select: {
                 id: true,
                 name: true,
-                maxLeverage: true,
                 active: true,
-                bankrollPercentage: true,
             }
         });
         if (!account) {
@@ -167,6 +163,7 @@ export const getAccountPositions = async (req: Request, res: Response) => {
         const positions = filteredPos.map(async (pos: any) => {
             const trade = await prisma.trades.findFirst({ where: { pair: pos.info.symbol, open: true, credentialId: +id }, include: { traders: true } });
             return {
+                id: trade?.id,
                 symbol: pos.info.symbol,
                 size: pos.info.size,
                 leverage: pos.info.leverage,
